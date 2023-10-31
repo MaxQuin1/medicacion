@@ -1,11 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
   return (
     <>
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
       <div className="hidden sm:block ">
-      <img className="w-full h-full object-cover" src='https://elglobal.es/wp-content/uploads/2022/03/GettyImages-1311641109.jpg'></img>
+      <img className="w-full h-full object-cover" src='https://elglobal.es/wp-content/uploads/2022/03/GettyImages-1311641109.jpg' alt=''/>
       </div>
 
       <div className="flex flex-col justify-center bg-sky-500">
@@ -27,11 +28,11 @@ export default function Login() {
           </div>
           
           <div className="mb-6 text-center mt-4 ">
-            {/* <Link to="/home"> */}
+            <Link to="/home">
               <button className="rounded-lg w-20 h-10 p-0 m-2 bg-green-400">
                 <p className='text-center '>Login</p>
                 </button>
-            {/* </Link> */}
+            </Link>
 
             <p>¿Eres nuevo?</p>
              {/* <Link to="/Registro"> */}
