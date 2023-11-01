@@ -1,7 +1,23 @@
 import React from 'react'
+import { useState } from "react";
+import axios from "axios";
 import { Link } from 'react-router-dom'
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const Login = async () => {
+    const response = await axios.post("http://localhost:8082/login", {
+      correo_electronico: email,
+      contrasena: password,
+    });
+    if(response.data.status){
+      window.location.href = "/home";
+    } else{
+      console.log('Prueba con otro correo o contraseña')
+    }
+  };
   return (
     <>
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
@@ -16,24 +32,29 @@ export default function Login() {
             <input
               className=" bg-white mt-2 p-2 border border-black rounded-lg"
               type="text"
-              placeholder="email"
+                  placeholder="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
             ></input>
           </div>
           <div className="flex flex-col py-2">
             <input
               className=" bg-white mt-2 p-2 border border-black rounded-lg"
-              type="Password"
-              placeholder="password"
+              type="password"
+                  placeholder="Contraseña"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
             ></input>
           </div>
           
           <div className="mb-6 text-center mt-4 ">
-            <Link to="/home">
-              <button className="rounded-lg w-20 h-10 p-0 m-2 bg-green-400">
+              <button 
+              className="rounded-lg w-20 h-10 p-0 m-2 bg-green-400"
+              onClick={Login}>
                 <p className='text-center '>Login</p>
                 </button>
-            </Link>
-
             <p>¿Eres nuevo?</p>
              {/* <Link to="/Registro"> */}
                <button className="bg-sky-100 p-3 rounded-lg m-2">Register</button>
