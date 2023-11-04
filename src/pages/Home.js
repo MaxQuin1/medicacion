@@ -4,15 +4,25 @@ import evening from "../img/evening.png";
 import amanecer from "../img/amanecer.png";
 import luna from "../img/luna.png";
 import pastillas from "../img/pastillas.png";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
     <>
       <div className="bg-blue-200">
+        <div dir="rtl" className="b-0">
+          <button className="align-top rounded-bl-lg w-[55px] h-[55px] bg-blue-400 mt-0 ml-8 mb-0 text-top">
+            <Link to= "/medicamento">
+              <p className="text-2xl ">
+                +
+              </p>
+            </Link>
+          </button>
+        </div>
         <div className="flex justify-center items-center h-screen">
           <div className="bg-white rounded-lg shadow-lg p-1  lg:w-2/3">
-            <div className="m-5 border">
-              <table className="w-full">
+            <div className="m-5 border ">
+              <table className="w-full ">
                 <tr className="text-center text-xl">
                   <td></td>
                   <td>Medications</td>
@@ -103,7 +113,7 @@ export default function Home() {
                 {/* */}
                 <tr>
                   <td
-                    className="bg-yellow-200"
+                    className="bg-amber-100"
                     style={{
                       textAlign: "center",
                       verticalAlign: "middle",
