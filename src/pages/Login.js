@@ -8,14 +8,21 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const Login = async () => {
-    const response = await axios.post("http://localhost:8082/login", {
-      correo_electronico: email,
-      contrasena: password,
-    });
-    if(response.data.status){
-      window.location.href = "/home";
-    } else{
-      console.log('Prueba con otro correo o contraseña')
+    try {
+      const response = await axios.post("http://localhost:8082/login", {
+        correo_electronico: email,
+        contrasena: password,
+      });
+
+      if (response.data.status) {
+        const idUsuario = response.data.respuesta;
+        console.log(idUsuario);
+        window.location.href = (`/home/${idUsuario}`);
+      } else {
+        console.log('Prueba con otro correo o contraseña');
+      }
+    } catch (error) {
+      console.error("Error al autenticar el usuario:", error);
     }
   };
 

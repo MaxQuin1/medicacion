@@ -16,11 +16,11 @@ export const rutas = createBrowserRouter([
     element: <Registro />,
   },
   {
-    path: "/home",
+    path: "/home/:id_usuario",
     element: <Home />,
   },
   {
-    path: "/medicamento",
+    path: "/medicamento/:id_usuario",
     element: <Medicamento/>
   }
 ]);

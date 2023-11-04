@@ -7,12 +7,14 @@ import pastillas from "../img/pastillas.png";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+  const id_usuario = window.location.href.split("/")[4];
+
   return (
     <>
       <div className="bg-blue-200">
         <div dir="rtl" className="b-0">
           <button className="align-top rounded-bl-lg w-[55px] h-[55px] bg-blue-400 mt-0 ml-8 mb-0 text-top">
-            <Link to= "/medicamento">
+            <Link to= {`/medicamento/${id_usuario}`}>
               <p className="text-2xl ">
                 +
               </p>
