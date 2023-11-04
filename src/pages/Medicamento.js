@@ -7,9 +7,9 @@ function Medicamento() {
   return (
     <>
     <div className='bg-blue-200 h-screen '> 
-    <div className="ml-20 pt-5 ">
+    <div className="ml-20 ">
         <h1 className="font-black text-5xl text-blue-900"> Nueva receta </h1>
-        <p className="mt-4 text-2xl">Llena los campos para agregar la receta</p>
+        <p className="mt-4 text-2xl">Llena los campos para agregar a la receta</p>
         <div className="flex justify-end mr-20">
         <button className="bg-sky-900 text-white px-3 py-2 mb-1 font-bold uppercase rounded-3xl">
           <Link to="/home">Regresar</Link>
