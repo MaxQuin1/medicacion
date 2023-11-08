@@ -97,9 +97,13 @@ export default function Home() {
       ...receta,
       fechasConHorario,
     });
-  }
+  }  
 
-  // console.log(recetasConHorario);
+  console.log(recetasConHorario);
+
+  // const recetaFinal = recetasConHorario.map(() =>{
+
+  // });
 
   return (
     <>

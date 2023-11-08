@@ -16,7 +16,8 @@ export default function Registro() {
         fecha_nacimiento: fecha,
     });
     if(response.data){
-      window.location.href = "/home";
+      window.location.href = "/";
+      alert('Paciente registrado correctamente')
     } else{
       console.log('Fallo en agregar usuario')
     }

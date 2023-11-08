@@ -28,6 +28,7 @@ function Formulario() {
       });
       console.log("Respuesta del servidor:", response.data);
       window.location.href = `/home/${id_usuario}`;
+      alert('Receta agregada correctamente')
     } catch (error) {
       console.error("Error al enviar los datos:", error);
     }

@@ -13,7 +13,7 @@ function Medicamento() {
         <p className="mt-4 text-2xl">Llena los campos para agregar a la receta</p>
         <div className="flex justify-end mr-20">
         <button className="bg-sky-900 text-white px-3 py-2 mb-1 font-bold uppercase rounded-3xl">
-        <Link to= {`/medicamento/${id_usuario}`}>Regresar</Link>
+        <Link to= {`/home/${id_usuario}`}>Regresar</Link>
         </button>
       </div>
       </div>
