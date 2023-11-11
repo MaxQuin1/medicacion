@@ -26,13 +26,25 @@ export default function Home() {
     fetchRecetas();
   }, []);
 
+const dosisPorDia = recetas.map((receta) => {
+  const dias = receta.dias * 86400000;
+  const intervalo = receta.intervalo * 3600000;
+  const dosis = dias / intervalo;
+
+  return dosis;
+});
+
+// dosisPorDia ahora contiene un array con la cantidad de dosis por día para cada receta
+console.log(dosisPorDia);
+
+
   const nuevasFechas = recetas.map((receta) => {
     const fechaInicial = new Date(receta.fecha);
     const intervaloEnMilisegundos = receta.intervalo * 3600000;
     const fechasReceta = [];
     let fechaActual = fechaInicial;
 
-    for (let i = 0; i <= receta.dias; i++) {
+    for (let i = 0; i <= dosisPorDia; i++) {
       fechasReceta.push(new Date(fechaActual));
       fechaActual = new Date(fechaActual.getTime() + intervaloEnMilisegundos);
     }
@@ -68,7 +80,7 @@ export default function Home() {
   for (let index = 0; index < recetas.length; index++) {
     const receta = recetas[index];
     const fechasReceta = nuevasFechas[index];
-    const fechasConHorario = [];
+    const dosisConHorario = [];
 
     for (const fecha of fechasReceta) {
       let nombreHorario = "";
@@ -87,7 +99,7 @@ export default function Home() {
         }
       }
 
-      fechasConHorario.push({
+      dosisConHorario.push({
         fecha,
         nombre_horario: nombreHorario,
       });
@@ -95,15 +107,11 @@ export default function Home() {
 
     recetasConHorario.push({
       ...receta,
-      fechasConHorario,
+      dosisConHorario,
     });
   }  
 
   console.log(recetasConHorario);
-
-  // const recetaFinal = recetasConHorario.map(() =>{
-
-  // });
 
   return (
     <>
@@ -118,32 +126,22 @@ export default function Home() {
         <div className="flex justify-center items-center h-screen">
           <div className="bg-white rounded-lg shadow-lg p-1  lg:w-2/3">
             <div className="m-5 border ">
-              <table className="w-full ">
-                <tr className="text-center text-xl">
-                  <th></th>
-                  <th>Medications</th>
-                  <th>Dosage</th>
-                  <th>Time</th>
-                  <th>Date</th>
-                  <th>Comments</th>
-                </tr>
-                <colgroup>
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col />
-                </colgroup>
+            <div className="flex ml-[27%] w-full">
+                  <b className="pl-5">Medicamentos</b>
+                  <b className="pl-7 ">Dosis</b>
+                  <b className="pl-20">Tiempo</b>
+                  <b className="pl-14">Dia</b>
+                  <b className="pl-12">Comentarios</b>
+                  </div>
+                <table className="w-full">
                 <tr>
                   <td
                     className="bg-red-200"
                     style={{
                       textAlign: "center",
                       verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
                     }}
-                    rowSpan="3"
+                    rowSpan="4"
                   >
                     <img
                       src={sol}
@@ -151,350 +149,188 @@ export default function Home() {
                       style={{ display: "inline-block" }}
                     />
                   </td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
                 </tr>
-                <tr>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
+                <tr className="bg-red-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-                <tr>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
+                <tr className="bg-red-200 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
+                <tr className="bg-red-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                </tr>
+                </table>
                 {/* */}
+                <table className="w-full mt-1">
                 <tr>
                   <td
-                    className="bg-amber-100"
+                    className="bg-yellow-200"
                     style={{
                       textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
                     }}
-                    rowSpan="3"
+                    rowSpan="4"
                   >
                     <img
                       src={amanecer}
-                      alt="amanecer"
+                      alt="sol"
                       style={{ display: "inline-block" }}
                     />
                   </td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
                 </tr>
-                <tr>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
+                <tr className="bg-yellow-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-                <tr>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
+                <tr className="bg-yellow-200 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
+                <tr className="bg-yellow-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                </tr>
+                </table>
                 {/* */}
+                <table className="w-full mt-1">
                 <tr>
                   <td
-                    className="bg-green-300"
+                    className="bg-green-200"
                     style={{
                       textAlign: "center",
                       verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
                     }}
-                    rowSpan="3"
+                    rowSpan="4"
                   >
                     <img
                       src={evening}
-                      alt="evening"
+                      alt="sol"
                       style={{ display: "inline-block" }}
                     />
                   </td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
                 </tr>
-                <tr>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
+                <tr className="bg-green-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-                <tr>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
+                <tr className="bg-green-200 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
+                <tr className="bg-green-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                </tr>
+                </table>
                 {/* */}
+                <table className="w-full mt-1">
                 <tr>
                   <td
                     className="bg-blue-200"
                     style={{
                       textAlign: "center",
                       verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
                     }}
-                    rowSpan="3"
+                    rowSpan="4"
                   >
                     <img
                       src={luna}
-                      alt="luna"
+                      alt="sol"
                       style={{ display: "inline-block" }}
                     />
                   </td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
                 </tr>
-                <tr>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
+                <tr className="bg-blue-100 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-                <tr>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
+                <tr className="bg-blue-200 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
+                <tr className='bg-blue-100 text-center'>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                </tr>
+                </table>
                 {/* */}
+                <table className="w-full mt-1">
                 <tr>
                   <td
                     className="bg-green-200"
                     style={{
                       textAlign: "center",
                       verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
                     }}
-                    rowSpan="3"
+                    rowSpan="4"
                   >
                     <img
                       src={pastillas}
-                      alt="pastillas"
+                      alt="sol"
                       style={{ display: "inline-block" }}
                     />
                   </td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
                 </tr>
-                <tr>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
+                <tr className="bg-green-300 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-                <tr>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
+                <tr className="bg-green-200 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
                 </tr>
-              </table>
+                <tr className="bg-green-300 text-center">
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                  <td className="">Hola</td>
+                </tr>
+                </table>
             </div>
           </div>
         </div>
