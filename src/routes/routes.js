@@ -4,8 +4,6 @@ import Registro from "../pages/Registro";
 import Home from "../pages/Home";
 import Medicamento from "../pages/Medicamento";
 
-
-
 export const rutas = createBrowserRouter([
   {
     path: "/",

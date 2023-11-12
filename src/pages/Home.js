@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
   const id_usuario = window.location.href.split("/")[4];
   const [recetas, setRecetas] = useState([]);
+  // const [dosisActual, setDosisActual] = useState(0);
 
   useEffect(() => {
     async function fetchRecetas() {
@@ -26,19 +27,32 @@ export default function Home() {
     fetchRecetas();
   }, []);
 
-  const nuevasFechas = recetas.map((receta) => {
+  const dosisTotal = recetas.map((receta) => {
+    const dias = receta.dias * 86400000;
+    const intervalo = receta.intervalo * 3600000;
+    const dosis = dias / intervalo;
+
+    return dosis;
+  });
+
+  // console.log(dosisTotal);
+
+  const nuevasFechas = recetas.map((receta, i) => {
     const fechaInicial = new Date(receta.fecha);
-    const intervaloEnMilisegundos = receta.intervalo * 3600000;
-    const fechasReceta = [];
+    const intervalo = receta.intervalo * 3600000;
+    const dosisPorReceta = dosisTotal[i];
+    const fechas = [];
     let fechaActual = fechaInicial;
 
-    for (let i = 0; i <= receta.dias; i++) {
-      fechasReceta.push(new Date(fechaActual));
-      fechaActual = new Date(fechaActual.getTime() + intervaloEnMilisegundos);
+    for (let i = 0; i < dosisPorReceta; i++) {
+      fechas.push(new Date(fechaActual));
+      fechaActual = new Date(fechaActual.getTime() + intervalo);
     }
 
-    return fechasReceta;
+    return fechas;
   });
+
+  // console.log(nuevasFechas)
 
   const horarios = [
     {
@@ -63,47 +77,33 @@ export default function Home() {
     },
   ];
 
-  const recetasConHorario = [];
+  function obtenerNombreHorario(fecha) {
+    const horaFecha = fecha.getHours() + fecha.getMinutes() / 60;
 
-  for (let index = 0; index < recetas.length; index++) {
-    const receta = recetas[index];
-    const fechasReceta = nuevasFechas[index];
-    const fechasConHorario = [];
-
-    for (const fecha of fechasReceta) {
-      let nombreHorario = "";
-
-      if (fecha instanceof Date && !isNaN(fecha)) {
-        const horaFecha = fecha.getHours() + fecha.getMinutes() / 60;
-
-        for (const horario of horarios) {
-          if (
-            horaFecha >= horario.hora_inicio &&
-            horaFecha <= horario.hora_final
-          ) {
-            nombreHorario = horario.nombre;
-            break;
-          }
-        }
+    for (const horario of horarios) {
+      if (horaFecha >= horario.hora_inicio && horaFecha <= horario.hora_final) {
+        return horario.nombre;
       }
-
-      fechasConHorario.push({
-        fecha,
-        nombre_horario: nombreHorario,
-      });
     }
+  }
 
-    recetasConHorario.push({
+  const recetasConHorario = recetas.map((receta, i) => {
+    const fechasReceta = nuevasFechas[i];
+
+    const dosisConHorario = fechasReceta.map((fecha) => ({
+      fecha,
+      nombre_horario: obtenerNombreHorario(fecha),
+    }));
+
+    return {
       ...receta,
-      fechasConHorario,
-    });
-  }  
+      dosisConHorario,
+    };
+  });
 
   console.log(recetasConHorario);
 
-  // const recetaFinal = recetasConHorario.map(() =>{
-
-  // });
+  const actualizarDosisActual = (id) => {};
 
   return (
     <>
@@ -118,382 +118,309 @@ export default function Home() {
         <div className="flex justify-center items-center h-screen">
           <div className="bg-white rounded-lg shadow-lg p-1  lg:w-2/3">
             <div className="m-5 border ">
-              <table className="w-full ">
-                <tr className="text-center text-xl">
-                  <th></th>
-                  <th>Medications</th>
-                  <th>Dosage</th>
-                  <th>Time</th>
-                  <th>Date</th>
-                  <th>Comments</th>
-                </tr>
-                <colgroup>
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col style={{ borderRight: "2px solid #FFFFFF" }} />
-                  <col />
-                </colgroup>
-                <tr>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                    rowSpan="3"
-                  >
-                    <img
-                      src={sol}
-                      alt="sol"
-                      style={{ display: "inline-block" }}
-                    />
-                  </td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                  <td className="bg-red-200">Hola</td>
-                </tr>
-                <tr>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                  <td className="bg-red-100">Hola</td>
-                </tr>
-                <tr>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-red-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                </tr>
-                {/* */}
-                <tr>
-                  <td
-                    className="bg-amber-100"
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                    rowSpan="3"
-                  >
-                    <img
-                      src={amanecer}
-                      alt="amanecer"
-                      style={{ display: "inline-block" }}
-                    />
-                  </td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                  <td className="bg-yellow-200">Hola</td>
-                </tr>
-                <tr>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                  <td className="bg-yellow-100">Hola</td>
-                </tr>
-                <tr>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-yellow-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                </tr>
-                {/* */}
-                <tr>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                    rowSpan="3"
-                  >
-                    <img
-                      src={evening}
-                      alt="evening"
-                      style={{ display: "inline-block" }}
-                    />
-                  </td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                  <td className="bg-green-300">Hola</td>
-                </tr>
-                <tr>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                </tr>
-                <tr>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-300"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                </tr>
-                {/* */}
-                <tr>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                    rowSpan="3"
-                  >
-                    <img
-                      src={luna}
-                      alt="luna"
-                      style={{ display: "inline-block" }}
-                    />
-                  </td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                  <td className="bg-blue-200">Hola</td>
-                </tr>
-                <tr>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                  <td className="bg-blue-100">Hola</td>
-                </tr>
-                <tr>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-blue-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                </tr>
-                {/* */}
-                <tr>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                    rowSpan="3"
-                  >
-                    <img
-                      src={pastillas}
-                      alt="pastillas"
-                      style={{ display: "inline-block" }}
-                    />
-                  </td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                  <td className="bg-green-200">Hola</td>
-                </tr>
-                <tr>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                  <td className="bg-green-100">Hola</td>
-                </tr>
-                <tr>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                  <td
-                    className="bg-green-200"
-                    style={{
-                      borderBottom: "2px solid #FFFFFF",
-                    }}
-                  >
-                    Hola
-                  </td>
-                </tr>
+              <div className="flex ml-[24%] gap-[8%] w-full">
+                <b className="">Medicamentos</b>
+                <b className="">Dosis</b>
+                <b className="">Tiempo</b>
+                <b className="">Dia</b>
+                <b className="">Comentarios</b>
+              </div>
+              <table className="w-full">
+                <tbody>
+                  <tr>
+                    <td
+                      className="bg-red-200"
+                      style={{
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                      }}
+                      rowSpan="4"
+                    >
+                      <img
+                        src={sol}
+                        alt="sol"
+                        style={{ display: "inline-block" }}
+                      />
+                    </td>
+                  </tr>
+                  {recetasConHorario.map((receta) => {
+                    const primeraDosis = receta.dosisConHorario[0];
+                    if (
+                      primeraDosis &&
+                      primeraDosis.nombre_horario === "morning"
+                    ) {
+                      return (
+                        <tr className="bg-red-100 text-center">
+                          <td>{receta.medicamento}</td>
+                          <td>
+                            {receta.cantidad}
+                            {receta.unidad}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.getHours()}:
+                            {primeraDosis.fecha.getMinutes()}
+                          </td>
+                          <td>{primeraDosis.fecha.toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                actualizarDosisActual(receta.id_receta)
+                              }
+                            >
+                              Check
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr key={receta.id} className="bg-red-100 text-center">
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                        </tr>
+                      );
+                    }
+                  })}
+                </tbody>
+              </table>
+              {/* */}
+              <table className="w-full mt-1">
+                <tbody>
+                  <tr>
+                    <td
+                      className="bg-yellow-200"
+                      style={{
+                        textAlign: "center",
+                      }}
+                      rowSpan="4"
+                    >
+                      <img
+                        src={amanecer}
+                        alt="sol"
+                        style={{ display: "inline-block" }}
+                      />
+                    </td>
+                  </tr>
+                  {recetasConHorario.map((receta) => {
+                    const primeraDosis = receta.dosisConHorario[0];
+
+                    if (
+                      primeraDosis &&
+                      primeraDosis.nombre_horario === "noon"
+                    ) {
+                      return (
+                        <tr className="bg-yellow-100 text-center">
+                          <td>{receta.medicamento}</td>
+                          <td>
+                            {receta.cantidad}
+                            {receta.unidad}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.getHours()}:
+                            {primeraDosis.fecha.getMinutes()}
+                          </td>
+                          <td>{primeraDosis.fecha.toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                actualizarDosisActual(receta.id_receta)
+                              }
+                            >
+                              Check
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr
+                          key={receta.id}
+                          className="bg-yellow-100 text-center"
+                        >
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                        </tr>
+                      );
+                    }
+                  })}
+                </tbody>
+              </table>
+              {/* */}
+              <table className="w-full mt-1">
+                <tbody>
+                  <tr>
+                    <td
+                      className="bg-green-200"
+                      style={{
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                      }}
+                      rowSpan="4"
+                    >
+                      <img
+                        src={evening}
+                        alt="sol"
+                        style={{ display: "inline-block" }}
+                      />
+                    </td>
+                  </tr>
+                  {recetasConHorario.map((receta) => {
+                    const primeraDosis = receta.dosisConHorario[0];
+
+                    if (
+                      primeraDosis &&
+                      primeraDosis.nombre_horario === "tarde"
+                    ) {
+                      return (
+                        <tr className="bg-green-100 text-center">
+                          <td>{receta.medicamento}</td>
+                          <td>
+                            {receta.cantidad}
+                            {receta.unidad}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.getHours()}:
+                            {primeraDosis.fecha.getMinutes()}
+                          </td>
+                          <td>{primeraDosis.fecha.toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                actualizarDosisActual(receta.id_receta)
+                              }
+                            >
+                              Check
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr
+                          key={receta.id}
+                          className="bg-green-100 text-center"
+                        >
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                        </tr>
+                      );
+                    }
+                  })}
+                </tbody>
+              </table>
+              {/* */}
+              <table className="w-full mt-1">
+                <tbody>
+                  <tr>
+                    <td
+                      className="bg-blue-200"
+                      style={{
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                      }}
+                      rowSpan="4"
+                    >
+                      <img
+                        src={luna}
+                        alt="sol"
+                        style={{ display: "inline-block" }}
+                      />
+                    </td>
+                  </tr>
+                  {recetasConHorario.map((receta) => {
+                    const primeraDosis = receta.dosisConHorario[0];
+
+                    if (
+                      primeraDosis &&
+                      primeraDosis.nombre_horario === "night"
+                    ) {
+                      return (
+                        <tr className="bg-blue-100 text-center">
+                          <td>{receta.medicamento}</td>
+                          <td>
+                            {receta.cantidad}
+                            {receta.unidad}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.getHours()}:
+                            {primeraDosis.fecha.getMinutes()}
+                          </td>
+                          <td>{primeraDosis.fecha.toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                actualizarDosisActual(receta.id_receta)
+                              }
+                            >
+                              Check
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr key={receta.id} className="bg-blue-100 text-center">
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                          <td>vacio</td>
+                        </tr>
+                      );
+                    }
+                  })}
+                </tbody>
+              </table>
+              {/* */}
+              <table className="w-full mt-1">
+                <tbody>
+                  <tr>
+                    <td
+                      className="bg-green-200"
+                      style={{
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                      }}
+                      rowSpan="4"
+                    >
+                      <img
+                        src={pastillas}
+                        alt="sol"
+                        style={{ display: "inline-block" }}
+                      />
+                    </td>
+                  </tr>
+                  <tr className="bg-green-300 text-center">
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                  </tr>
+                  <tr className="bg-green-200 text-center">
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                  </tr>
+                  <tr className="bg-green-300 text-center">
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                    <td className="">vacio</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
