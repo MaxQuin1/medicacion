@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from "axios";
 
 function AddMedicamento({ isOpen, onClose, onConfirm, message, inputPlaceholder, inputValue, onInputChange }) {
+const [medicamento, setMedicamento] = useState();
+
+const crearMedicamento = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:8082/crearMedicamentos", {
+      medicamento: medicamento,
+    });
+    console.log("Respuesta del servidor:", response.data);
+    alert('Medicamento agregado correctamente')
+    onClose()
+  } catch (error) {
+    console.error("Error al enviar los datos:", error);
+  }
+};
+
   if (!isOpen) {
     return null;
   }
@@ -17,15 +34,16 @@ function AddMedicamento({ isOpen, onClose, onConfirm, message, inputPlaceholder,
             className='w-full border items-center rounded-lg p-1 m-auto'
             type="text"
             placeholder={inputPlaceholder}
-            value={inputValue}
-            onChange={onInputChange}
+            value={medicamento}
+            onChange={((e) =>{
+              setMedicamento(e.target.value)})}
           />
         </div>
         <div className="modal-actions p-4 bg-gray-100">
           <button
             className="btn-primary mr-2 rounded-md p-2 "
             style={{ backgroundColor: buttonColor, color: '#1e3a8a' }}
-            onClick={onConfirm}
+            onClick={crearMedicamento}
           >
             Confirmar
           </button>
