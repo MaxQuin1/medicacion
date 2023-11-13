@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 export default function Home() {
   const id_usuario = window.location.href.split("/")[4];
   const [recetas, setRecetas] = useState([]);
-  // const [dosisActual, setDosisActual] = useState(0);
 
   useEffect(() => {
     async function fetchRecetas() {
@@ -103,7 +102,16 @@ export default function Home() {
 
   console.log(recetasConHorario);
 
-  const actualizarDosisActual = (id) => {};
+  const actualizarDosisActual = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/modificarFecha/${id}`
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error al modificar la fecha:", error);
+    }
+  };
 
   return (
     <>
@@ -145,12 +153,9 @@ export default function Home() {
                   </tr>
                   {recetasConHorario.map((receta) => {
                     const primeraDosis = receta.dosisConHorario[0];
-                    if (
-                      primeraDosis &&
-                      primeraDosis.nombre_horario === "morning"
-                    ) {
+                    if (primeraDosis.nombre_horario === "morning" /*&& primeraDosis.dosisConHorario.length > 1*/) {
                       return (
-                        <tr className="bg-red-100 text-center">
+                        <tr key={receta.id} className="bg-red-100 text-center">
                           <td>{receta.medicamento}</td>
                           <td>
                             {receta.cantidad}
@@ -172,17 +177,7 @@ export default function Home() {
                           </td>
                         </tr>
                       );
-                    } else {
-                      return (
-                        <tr key={receta.id} className="bg-red-100 text-center">
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                        </tr>
-                      );
-                    }
+                    } 
                   })}
                 </tbody>
               </table>
@@ -206,13 +201,12 @@ export default function Home() {
                   </tr>
                   {recetasConHorario.map((receta) => {
                     const primeraDosis = receta.dosisConHorario[0];
-
-                    if (
-                      primeraDosis &&
-                      primeraDosis.nombre_horario === "noon"
-                    ) {
+                    if (primeraDosis.nombre_horario === "noon" && receta.dosisConHorario.length > 1) {
                       return (
-                        <tr className="bg-yellow-100 text-center">
+                        <tr
+                          key={receta.id}
+                          className="bg-yellow-100 text-center"
+                        >
                           <td>{receta.medicamento}</td>
                           <td>
                             {receta.cantidad}
@@ -232,19 +226,6 @@ export default function Home() {
                               Check
                             </button>
                           </td>
-                        </tr>
-                      );
-                    } else {
-                      return (
-                        <tr
-                          key={receta.id}
-                          className="bg-yellow-100 text-center"
-                        >
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
                         </tr>
                       );
                     }
@@ -272,13 +253,12 @@ export default function Home() {
                   </tr>
                   {recetasConHorario.map((receta) => {
                     const primeraDosis = receta.dosisConHorario[0];
-
-                    if (
-                      primeraDosis &&
-                      primeraDosis.nombre_horario === "tarde"
-                    ) {
+                    if (primeraDosis.nombre_horario === "tarde" && receta.dosisConHorario.length > 1) {
                       return (
-                        <tr className="bg-green-100 text-center">
+                        <tr
+                          key={receta.id}
+                          className="bg-green-100 text-center"
+                        >
                           <td>{receta.medicamento}</td>
                           <td>
                             {receta.cantidad}
@@ -298,19 +278,6 @@ export default function Home() {
                               Check
                             </button>
                           </td>
-                        </tr>
-                      );
-                    } else {
-                      return (
-                        <tr
-                          key={receta.id}
-                          className="bg-green-100 text-center"
-                        >
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
                         </tr>
                       );
                     }
@@ -338,13 +305,9 @@ export default function Home() {
                   </tr>
                   {recetasConHorario.map((receta) => {
                     const primeraDosis = receta.dosisConHorario[0];
-
-                    if (
-                      primeraDosis &&
-                      primeraDosis.nombre_horario === "night"
-                    ) {
+                    if (primeraDosis.nombre_horario === "night" && receta.dosisConHorario.length > 1) {
                       return (
-                        <tr className="bg-blue-100 text-center">
+                        <tr key={receta.id} className="bg-blue-100 text-center">
                           <td>{receta.medicamento}</td>
                           <td>
                             {receta.cantidad}
@@ -364,16 +327,6 @@ export default function Home() {
                               Check
                             </button>
                           </td>
-                        </tr>
-                      );
-                    } else {
-                      return (
-                        <tr key={receta.id} className="bg-blue-100 text-center">
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
-                          <td>vacio</td>
                         </tr>
                       );
                     }
@@ -399,27 +352,40 @@ export default function Home() {
                       />
                     </td>
                   </tr>
-                  <tr className="bg-green-300 text-center">
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                  </tr>
-                  <tr className="bg-green-200 text-center">
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                  </tr>
-                  <tr className="bg-green-300 text-center">
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                    <td className="">vacio</td>
-                  </tr>
+                  {recetasConHorario.map((receta) => {
+                    const UnicaDosis = receta.dosisConHorario.length === 1;
+                    if (UnicaDosis) {
+                      const primeraDosis = receta.dosisConHorario[0];
+                      return (
+                        <tr
+                          key={receta.id}
+                          className="bg-green-300 text-center"
+                        >
+                          <td>{receta.medicamento}</td>
+                          <td>
+                            {receta.cantidad}
+                            {receta.unidad}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.getHours()}:
+                            {primeraDosis.fecha.getMinutes()}
+                          </td>
+                          <td>
+                            {primeraDosis.fecha.toLocaleDateString()}
+                          </td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                actualizarDosisActual(receta.id_receta)
+                              }
+                            >
+                              Check
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  })}
                 </tbody>
               </table>
             </div>

@@ -33,7 +33,7 @@ function Medicamento() {
   return (
     <>
       <div className="bg-blue-200 h-screen ">
-        <div className="ml-20 p-3">
+        <div className="ml-20">
           <h1 className="font-black text-5xl text-blue-900"> Nueva receta </h1>
           <p className="mt-4 text-2xl">
             Llena los campos para agregar a la receta

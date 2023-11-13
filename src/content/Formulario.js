@@ -46,7 +46,8 @@ function Formulario() {
       }
     }
     fetchMedicamentos();
-  }, []);
+  }, []); 
+  
 
   useEffect(() => {
     async function fetchViasAdministracion() {
