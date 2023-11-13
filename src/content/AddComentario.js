@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from "axios";
 
-function AddComentario({ isOpen, onClose, onConfirm, message, inputPlaceholder, inputValue, onInputChange }) {
+function AddComentario({id, isOpen, onClose, onConfirm, message, inputPlaceholder, inputValue, onInputChange }) {
+  const [comentario, setComentario] = useState('')
+
+  const crearComentario = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8082/crearComentario/${id}`,
+        {
+          comentario: comentario,
+        }
+      );
+      console.log("Respuesta del servidor:", response.data);
+      alert('Comentario agregado con exito');
+      onClose()
+    } catch (error) {
+      console.error("Error al crear el comentario:", error);
+    }
+  };  
+
   if (!isOpen) {
     return null;
   }
@@ -17,15 +36,17 @@ function AddComentario({ isOpen, onClose, onConfirm, message, inputPlaceholder, 
             className='w-full border items-center rounded-lg p-1 m-auto'
             type="text"
             placeholder={inputPlaceholder}
-            value={inputValue}
-            onChange={onInputChange}
+            value={comentario}
+            onChange={(e) =>{
+              setComentario(e.target.value)
+            }}
           />
         </div>
         <div className="modal-actions p-4 bg-gray-100">
           <button
             className="btn-primary mr-2 rounded-md p-2 "
             style={{ backgroundColor: buttonColor, color: '#1e3a8a' }}
-            onClick={onConfirm}
+            onClick={crearComentario}
           >
             Confirmar
           </button>
