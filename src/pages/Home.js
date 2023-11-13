@@ -7,6 +7,7 @@ import amanecer from "../img/amanecer.png";
 import luna from "../img/luna.png";
 import pastillas from "../img/pastillas.png";
 import { Link } from "react-router-dom";
+import AddComentario from "../content/AddComentario";
 
 export default function Home() {
   const id_usuario = window.location.href.split("/")[4];
@@ -136,6 +137,9 @@ export default function Home() {
               <table className="w-full">
                 <tbody>
                   <tr>
+                    <td></td>
+                  </tr>
+                  <tr>
                     <td
                       className="bg-red-200"
                       style={{
@@ -167,13 +171,32 @@ export default function Home() {
                           </td>
                           <td>{primeraDosis.fecha.toLocaleDateString()}</td>
                           <td>
-                            <button
-                              onClick={() =>
-                                actualizarDosisActual(receta.id_receta)
-                              }
-                            >
-                              Check
-                            </button>
+                            <div>
+                              <button
+                                onClick={() =>
+                                  actualizarDosisActual(receta.id_receta)
+                                }
+                                className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
+                              >
+                                Check
+                              </button>
+                              
+                              <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            </div>
                           </td>
                         </tr>
                       );
@@ -222,8 +245,30 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
+                            </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            <button
+                              c
+                              lassName="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                            >
+                              Agregar Comentarios
                             </button>
                           </td>
                         </tr>
@@ -274,9 +319,25 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
                             </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
                           </td>
                         </tr>
                       );
@@ -323,9 +384,26 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className=" bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
                             </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            
                           </td>
                         </tr>
                       );
