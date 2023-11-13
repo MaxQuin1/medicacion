@@ -7,6 +7,7 @@ import amanecer from "../img/amanecer.png";
 import luna from "../img/luna.png";
 import pastillas from "../img/pastillas.png";
 import { Link } from "react-router-dom";
+import AddComentario from "../content/AddComentario";
 
 export default function Home() {
   const id_usuario = window.location.href.split("/")[4];
@@ -105,6 +106,30 @@ export default function Home() {
 
   const actualizarDosisActual = (id) => {};
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToAdd, setUserToAdd] = useState("");
+  const [users, setUsers] = useState([]);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmAction = () => {
+    if (userToAdd) {
+      setUsers([...users, userToAdd]);
+      setUserToAdd("");
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleUserInputChange = (e) => {
+    setUserToAdd(e.target.value);
+  };
+
   return (
     <>
       <div className="bg-blue-200">
@@ -127,6 +152,9 @@ export default function Home() {
               </div>
               <table className="w-full">
                 <tbody>
+                  <tr>
+                    <td></td>
+                  </tr>
                   <tr>
                     <td
                       className="bg-red-200"
@@ -162,19 +190,39 @@ export default function Home() {
                           </td>
                           <td>{primeraDosis.fecha.toLocaleDateString()}</td>
                           <td>
-                            <button
-                              onClick={() =>
-                                actualizarDosisActual(receta.id_receta)
-                              }
-                            >
-                              Check
-                            </button>
+                            <div>
+                              <button
+                                onClick={() =>
+                                  actualizarDosisActual(receta.id_receta)
+                                }
+                                className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
+                              >
+                                Check
+                              </button>
+                              
+                              <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            </div>
                           </td>
                         </tr>
                       );
                     } else {
                       return (
                         <tr key={receta.id} className="bg-red-100 text-center">
+                          <td>vacio</td>
                           <td>vacio</td>
                           <td>vacio</td>
                           <td>vacio</td>
@@ -228,8 +276,30 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
+                            </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            <button
+                              c
+                              lassName="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                            >
+                              Agregar Comentarios
                             </button>
                           </td>
                         </tr>
@@ -294,9 +364,25 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className="bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
                             </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
                           </td>
                         </tr>
                       );
@@ -306,6 +392,7 @@ export default function Home() {
                           key={receta.id}
                           className="bg-green-100 text-center"
                         >
+                          <td>vacio</td>
                           <td>vacio</td>
                           <td>vacio</td>
                           <td>vacio</td>
@@ -360,9 +447,26 @@ export default function Home() {
                               onClick={() =>
                                 actualizarDosisActual(receta.id_receta)
                               }
+                              className=" bg-sky-900 ml-1 text-white px-1 py-2  rounded-xl items-center m-auto text-xs"
                             >
                               Check
                             </button>
+                            <button
+                                onClick={handleOpenModal}
+                                className="bg-sky-900 ml-1 text-white px-1 py-1 my-1 rounded-xl text-xs"
+                              >
+                                Agregar comentario
+                              </button>
+                              <AddComentario
+                                isOpen={isModalOpen}
+                                onClose={handleCloseModal}
+                                onConfirm={handleConfirmAction}
+                                message="Agrega tu comentario"
+                                inputPlaceholder="Comentario"
+                                inputValue={userToAdd}
+                                onInputChange={handleUserInputChange}
+                              />
+                            
                           </td>
                         </tr>
                       );
