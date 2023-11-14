@@ -41,8 +41,8 @@ export default function Home() {
     /* inicio el ciclo para sacar un arreglo donde se creen las
     fechas dependiendo de las dosis y el intervalo */
     for (let i = 0; i < dosisPorReceta; i++) {
-      fechas.push(new Date(fechaActual));
       fechaActual = new Date(fechaActual.getTime() + intervalo);
+      fechas.push(new Date(fechaActual));
     }
     // retorno las fechas para que se almacenen en nuevasFechas
     return fechas;
@@ -132,49 +132,65 @@ export default function Home() {
     };
   });
 
-  const actualizarDosisActual = async (id) => {
-    // Buscar la receta correspondiente
+  const compararFecha = async(e, id) => {
+    e.preventDefault();
     const recetaIndex = recetasConHorarioActualizado.findIndex(
       (receta) => receta.id_receta === id
     );
-    //   Eliminar una dosis
-    if (recetaIndex !== -1) {
-      recetasConHorarioActualizado[recetaIndex] = {
-        ...recetasConHorarioActualizado[recetaIndex],
-        dosis: recetasConHorarioActualizado[recetaIndex].dosis - 1,
-      };
-      // actualziar las dosis de la BD
-      try {
-        const response = await axios.put(
-          `http://localhost:8082/editarReceta/${id}`,
-          {
-            dosis: recetasConHorarioActualizado[recetaIndex].dosis,
+    const fechaActual = new Date();
+    if (
+      fechaActual >=
+      recetasConHorarioActualizado[recetaIndex].dosisConHorario[0].fecha
+    ) {
+      const actualizarDosisActual = async (id) => {
+        // Buscar la receta correspondiente
+        //   Eliminar una dosis
+        if (recetaIndex !== -1) {
+          recetasConHorarioActualizado[recetaIndex] = {
+            ...recetasConHorarioActualizado[recetaIndex],
+            dosis: recetasConHorarioActualizado[recetaIndex].dosis - 1,
+          };
+          // actualziar las dosis de la BD
+          try {
+            const response = await axios.put(
+              `http://localhost:8082/editarReceta/${id}`,
+              {
+                dosis: recetasConHorarioActualizado[recetaIndex].dosis,
+              }
+            );
+            console.log("Respuesta del servidor:", response.data);
+          } catch (error) {
+            console.error("Error al actualizar la receta:", error);
           }
-        );
-        console.log("Respuesta del servidor:", response.data);
-      } catch (error) {
-        console.error("Error al actualizar la receta:", error);
-      }      
-      // actualizar la fecha de la BD
-      try {
-        const response = await axios.put(
-          `http://localhost:8082/modificarFecha/${id}`
-        );
-        console.log("Respuesta del servidor:", response.data);
-      } catch (error) {
-        console.error("Error al actualizar la fecha:", error);
-      }
-      // Eliminar la receta si ya no quedan dosis
-      if (recetasConHorarioActualizado[recetaIndex].dosisConHorario.length === 0) {
-        try {
-          const response = await axios.delete(
-            `http://localhost:8082/eliminarFecha/${id}`
-          );
-          console.log("Respuesta del servidor:", response.data);
-        } catch (error) {
-          console.error("Error al eliminar la fecha:", error);
+          // actualizar la fecha de la BD
+          try {
+            const response = await axios.put(
+              `http://localhost:8082/modificarFecha/${id}`
+            );
+            console.log("Respuesta del servidor:", response.data);
+          } catch (error) {
+            console.error("Error al actualizar la fecha:", error);
+          }
+          // Eliminar la receta si ya no quedan dosis
+          if (
+            recetasConHorarioActualizado[recetaIndex].dosisConHorario.length ===
+            0
+          ) {
+            try {
+              const response = await axios.delete(
+                `http://localhost:8082/eliminarFecha/${id}`
+              );
+              console.log("Respuesta del servidor:", response.data);
+            } catch (error) {
+              console.error("Error al eliminar la fecha:", error);
+            }
+          }
         }
-      }
+      };
+      await actualizarDosisActual(id);
+    } else {
+      alert("No es tiempo todavia de tomar tu pastilla");
+      return;
     }
   };
   // para ver resultados
@@ -245,7 +261,7 @@ export default function Home() {
                   {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita) => {
+                        {receta.primerasFechas.map((fechita, index) => {
                           if (
                             fechita.nombre_horario === "morning" &&
                             receta.dosisConHorario.length > 1
@@ -267,32 +283,34 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                    <button
-                                      onClick={(id) =>
-                                        actualizarDosisActual(
-                                          (id = receta.id_receta)
-                                        )
-                                      }
-                                      className="bg-red-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
-                                    >
-                                      Check
-                                    </button>
-                                    <button
-                                      onClick={handleOpenModal}
-                                      className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
-                                    >
-                                      Agregar comentario
-                                    </button>
-                                    <AddComentario
-                                      id={receta.id_receta}
-                                      isOpen={isModalOpen}
-                                      onClose={handleCloseModal}
-                                      onConfirm={handleConfirmAction}
-                                      message="Agrega tu comentario"
-                                      inputPlaceholder="Comentario"
-                                      inputValue={userToAdd}
-                                      onInputChange={handleUserInputChange}
-                                    />
+                                    {index === 0 ? (
+                                      <>
+                                        <button
+                                          onClick={(e) =>
+                                            compararFecha(e, receta.id_receta)
+                                          }
+                                          className="bg-red-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
+                                        >
+                                          Check
+                                        </button>
+                                        <button
+                                          onClick={handleOpenModal}
+                                          className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
+                                        >
+                                          Agregar comentario
+                                        </button>
+                                        <AddComentario
+                                          id={receta.id_receta}
+                                          isOpen={isModalOpen}
+                                          onClose={handleCloseModal}
+                                          onConfirm={handleConfirmAction}
+                                          message="Agrega tu comentario"
+                                          inputPlaceholder="Comentario"
+                                          inputValue={userToAdd}
+                                          onInputChange={handleUserInputChange}
+                                        />
+                                      </>
+                                    ) : null}
                                   </div>
                                   {receta.comentario}
                                 </td>
@@ -329,7 +347,7 @@ export default function Home() {
                   {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita) => {
+                        {receta.primerasFechas.map((fechita, index) => {
                           if (
                             fechita.nombre_horario === "noon" &&
                             receta.dosisConHorario.length > 1
@@ -352,32 +370,34 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                    <button
-                                      onClick={(id) =>
-                                        actualizarDosisActual(
-                                          (id = receta.id_receta)
-                                        )
-                                      }
-                                      className="bg-yellow-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
-                                    >
-                                      Check
-                                    </button>
-                                    <button
-                                      onClick={handleOpenModal}
-                                      className="bg-yellow-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
-                                    >
-                                      Agregar comentario
-                                    </button>
-                                    <AddComentario
-                                      id={receta.id_receta}
-                                      isOpen={isModalOpen}
-                                      onClose={handleCloseModal}
-                                      onConfirm={handleConfirmAction}
-                                      message="Agrega tu comentario"
-                                      inputPlaceholder="Comentario"
-                                      inputValue={userToAdd}
-                                      onInputChange={handleUserInputChange}
-                                    />
+                                  {index === 0 ? (
+                                      <>
+                                        <button
+                                          onClick={(e) =>
+                                            compararFecha(e, receta.id_receta)
+                                          }
+                                          className="bg-yellow-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
+                                        >
+                                          Check
+                                        </button>
+                                        <button
+                                          onClick={handleOpenModal}
+                                          className="bg-yellow-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
+                                        >
+                                          Agregar comentario
+                                        </button>
+                                        <AddComentario
+                                          id={receta.id_receta}
+                                          isOpen={isModalOpen}
+                                          onClose={handleCloseModal}
+                                          onConfirm={handleConfirmAction}
+                                          message="Agrega tu comentario"
+                                          inputPlaceholder="Comentario"
+                                          inputValue={userToAdd}
+                                          onInputChange={handleUserInputChange}
+                                        />
+                                      </>
+                                    ) : null}
                                   </div>
                                   {receta.comentario}
                                 </td>
@@ -413,7 +433,7 @@ export default function Home() {
                   {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita) => {
+                        {receta.primerasFechas.map((fechita, index) => {
                           if (
                             fechita.nombre_horario === "tarde" &&
                             receta.dosisConHorario.length > 1
@@ -435,32 +455,34 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                    <button
-                                      onClick={(id) =>
-                                        actualizarDosisActual(
-                                          (id = receta.id_receta)
-                                        )
-                                      }
-                                      className="bg-green-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
-                                    >
-                                      Check
-                                    </button>
-                                    <button
-                                      onClick={handleOpenModal}
-                                      className="bg-green-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
-                                    >
-                                      Agregar comentario
-                                    </button>
-                                    <AddComentario
-                                      id={receta.id_receta}
-                                      isOpen={isModalOpen}
-                                      onClose={handleCloseModal}
-                                      onConfirm={handleConfirmAction}
-                                      message="Agrega tu comentario"
-                                      inputPlaceholder="Comentario"
-                                      inputValue={userToAdd}
-                                      onInputChange={handleUserInputChange}
-                                    />
+                                  {index === 0 ? (
+                                      <>
+                                        <button
+                                          onClick={(e) =>
+                                            compararFecha(e, receta.id_receta)
+                                          }
+                                          className="bg-green-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
+                                        >
+                                          Check
+                                        </button>
+                                        <button
+                                          onClick={handleOpenModal}
+                                          className="bg-green-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
+                                        >
+                                          Agregar comentario
+                                        </button>
+                                        <AddComentario
+                                          id={receta.id_receta}
+                                          isOpen={isModalOpen}
+                                          onClose={handleCloseModal}
+                                          onConfirm={handleConfirmAction}
+                                          message="Agrega tu comentario"
+                                          inputPlaceholder="Comentario"
+                                          inputValue={userToAdd}
+                                          onInputChange={handleUserInputChange}
+                                        />
+                                      </>
+                                    ) : null}
                                   </div>
                                   {receta.comentario}
                                 </td>
@@ -496,7 +518,7 @@ export default function Home() {
                   {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita) => {
+                        {receta.primerasFechas.map((fechita ,index) => {
                           if (
                             fechita.nombre_horario === "night" &&
                             receta.dosisConHorario.length > 1
@@ -518,32 +540,34 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                    <button
-                                      onClick={(id) =>
-                                        actualizarDosisActual(
-                                          (id = receta.id_receta)
-                                        )
-                                      }
-                                      className="bg-blue-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
-                                    >
-                                      Check
-                                    </button>
-                                    <button
-                                      onClick={handleOpenModal}
-                                      className="bg-blue-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
-                                    >
-                                      Agregar comentario
-                                    </button>
-                                    <AddComentario
-                                      id={receta.id_receta}
-                                      isOpen={isModalOpen}
-                                      onClose={handleCloseModal}
-                                      onConfirm={handleConfirmAction}
-                                      message="Agrega tu comentario"
-                                      inputPlaceholder="Comentario"
-                                      inputValue={userToAdd}
-                                      onInputChange={handleUserInputChange}
-                                    />
+                                  {index === 0 ? (
+                                      <>
+                                        <button
+                                          onClick={(e) =>
+                                            compararFecha(e, receta.id_receta)
+                                          }
+                                          className="bg-blue-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
+                                        >
+                                          Check
+                                        </button>
+                                        <button
+                                          onClick={handleOpenModal}
+                                          className="bg-blue-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
+                                        >
+                                          Agregar comentario
+                                        </button>
+                                        <AddComentario
+                                          id={receta.id_receta}
+                                          isOpen={isModalOpen}
+                                          onClose={handleCloseModal}
+                                          onConfirm={handleConfirmAction}
+                                          message="Agrega tu comentario"
+                                          inputPlaceholder="Comentario"
+                                          inputValue={userToAdd}
+                                          onInputChange={handleUserInputChange}
+                                        />
+                                      </>
+                                    ) : null}
                                   </div>
                                   {receta.comentario}
                                 </td>
@@ -600,8 +624,8 @@ export default function Home() {
                           <td>
                             <div>
                               <button
-                                onClick={(id) =>
-                                  actualizarDosisActual((id = receta.id_receta))
+                                onClick={(e) =>
+                                  compararFecha(e, receta.id_receta)
                                 }
                                 className="bg-green-500 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
                               >
