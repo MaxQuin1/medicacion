@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function Formulario() {
+  const id_usuario = window.location.href.split("/")[4];
   const [medicamentos, setMedicamentos] = useState([]);
   const [vias, setVias] = useState([]);
   const [medidas, setMedidas] = useState([]);
-
-  const id_usuario = window.location.href.split("/")[4];
   const [medicamento, setMedicamento] = useState("");
   const [via, setVia] = useState("");
   const [unidad, setUnidad] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [dias, setDias] = useState("");
-  const [intervalo, setIntervalo] = useState("");
+  const [intervalo, setIntervalo] = useState(""); 
 
   const crearReceta = async (e) => {
+    const diasEnMilisegundos = dias * 86400000;
+    const intervaloEnMilisegundos = intervalo * 3600000;
+    const dosisCalculada = diasEnMilisegundos / intervaloEnMilisegundos;
+
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8082/crearReceta", {
@@ -25,6 +28,7 @@ function Formulario() {
         cantidad: cantidad,
         dias: dias,
         intervalo: intervalo,
+        dosis: dosisCalculada,
       });
       console.log("Respuesta del servidor:", response.data);
       window.location.href = `/home/${id_usuario}`;
