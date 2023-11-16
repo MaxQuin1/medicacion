@@ -24,13 +24,6 @@ export default function MedicamentosPendientes() {
   }, []);
 
   const TomarDosis = async (id) => {
-    // const index = recetas.findIndex((receta) => receta.id_receta === id);
-
-    // // Elimina el elemento si se encuentra
-    // if (index !== -1) {
-    //     recetas.splice(index, 1);
-    // }
-
     try {
       const response = await axios.put(
         `http://localhost:8082/modificarFecha/${id}`
@@ -40,7 +33,7 @@ export default function MedicamentosPendientes() {
       console.error("Error al actualizar la fecha:", error);
     }
     window.location.href = `/home/${id_usuario}`;
-    alert('Medicamento tomado puedes revisarlo')
+    alert("Medicamento tomado puedes revisarlo");
   };
 
   return (
@@ -57,21 +50,25 @@ export default function MedicamentosPendientes() {
           </tr>
         </thead>
         <tbody>
-          {recetas.map((receta) => (
-            <tr key={receta.id_receta}>
-              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                {receta.medicamento}
-              </td>
-              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <button
-                  onClick={() => TomarDosis(receta.id_receta)}
-                  className="bg-red-400 text-white px-2 py-1 rounded-xl text-xs"
-                >
-                  Tomar Dosis
-                </button>
-              </td>
-            </tr>
-          ))}
+          {recetas.map((receta) => {
+            if (!receta.fecha) {
+              return (
+                <tr key={receta.id_receta}>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {receta.medicamento}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <button
+                      onClick={() => TomarDosis(receta.id_receta)}
+                      className="bg-red-400 text-white px-2 py-1 rounded-xl text-xs"
+                    >
+                      Tomar Dosis
+                    </button>
+                  </td>
+                </tr>
+              );
+            }
+          })}
         </tbody>
       </table>
     </>

@@ -224,11 +224,6 @@ export default function Home() {
     <>
       <div className="bg-blue-200 overflow-y-auto h-screen pt-5">
         <div dir="rtl" className="b-0">
-          {/* <button className="align-top rounded-bl-lg w-[55px] h-[55px] bg-blue-400 mt-0 ml-8 mb-0 text-top">
-            <Link to={`/medicamento/${id_usuario}`}>
-              <p className="text-2xl ">+</p>
-            </Link>
-          </button> */}
           <button className=" bg-blue-700 text-white px-3 mr-10 py-2 mb-1 font-bold uppercase rounded-3xl">
               <Link to={`/medicamentosPendientes/${id_usuario}`}>Medicamentos pendientes</Link>
             </button>
@@ -607,7 +602,7 @@ export default function Home() {
                     </td>
                   </tr>
                   {recetasConHorarioActualizado.map((receta) => {
-                    if (receta.dosisConHorario.length === 1) {
+                    if (receta.dosisConHorario.length === 1 && !receta.fecha === undefined) {
                       const dosisUnica = receta.dosisConHorario[0];
                       const hours = dosisUnica?.fecha?.getHours() ?? "";
                       const minutes = dosisUnica?.fecha?.getMinutes() ?? "";
