@@ -222,28 +222,26 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-blue-200 overflow-y-auto h-screen">
-        <div dir="rtl" className="b-0 ">
-          <button className="align-top rounded-bl-lg w-[55px] h-[55px] bg-blue-400 mt-0 ml-8 mb-0 text-top">
-            <Link to={`/medicamento/${id_usuario}`}>
-              <p className="text-2xl ">+</p>
-            </Link>
-          </button>
+      <div className="bg-blue-200 overflow-y-auto h-screen pt-5">
+        <div dir="rtl" className="b-0">
+          <button className=" bg-blue-700 text-white px-3 mr-10 py-2 mb-1 font-bold uppercase rounded-3xl">
+              <Link to={`/medicamentosPendientes/${id_usuario}`}>Medicamentos pendientes</Link>
+            </button>
+          <button className="bg-blue-700 text-white px-3 mr-5 py-2 mb-1 font-bold uppercase rounded-3xl">
+              <Link to={`/medicamento/${id_usuario}`}>Agregar receta</Link>
+            </button>
         </div>
         <div className="flex justify-center items-center h-screen">
           <div className="bg-white rounded-lg shadow-lg p-1  lg:w-2/3">
-            <div className="m-5 ">
-            <table className="rounded-t-lg mb-1 w-full bg-gray-200 ">
-              <tbody className="text-clip m-auto text-center">
-                <td className=""></td>
-                <td className="">Medicamento</td>
-                <td>Dosis</td>
-                <td>Tiempo</td>
-                <td>Día</td>
-                <td>Comentarios</td>
-              </tbody>
-            </table>
-            <table className="w-full mt-1" >
+            <div className="m-5 border ">
+              <div className="flex ml-[24%] gap-[8%] w-full">
+                <b className="">Medicamentos</b>
+                <b className="">Dosis</b>
+                <b className="">Tiempo</b>
+                <b className="">Dia</b>
+                <b className="">Comentarios</b>
+              </div>
+              <table className="w-full mt-1">
                 <tbody>
                   <tr key={recetasConHorarioActualizado}>
                     <td
@@ -252,7 +250,7 @@ export default function Home() {
                         textAlign: "center",
                         verticalAlign: "middle",
                       }}
-                      rowSpan="5"
+                      rowSpan='10'
                     >
                       <img
                         src={sol}
@@ -338,7 +336,7 @@ export default function Home() {
                         textAlign: "center",
                         verticalAlign: "middle",
                       }}
-                      rowSpan="5"
+                      rowSpan="10"
                     >
                       <img
                         src={amanecer}
@@ -424,7 +422,7 @@ export default function Home() {
                         textAlign: "center",
                         verticalAlign: "middle",
                       }}
-                      rowSpan="5"
+                      rowSpan="10"
                     >
                       <img
                         src={evening}
@@ -509,7 +507,7 @@ export default function Home() {
                         textAlign: "center",
                         verticalAlign: "middle",
                       }}
-                      rowSpan="5"
+                      rowSpan="10"
                     >
                       <img
                         src={luna}
@@ -594,7 +592,7 @@ export default function Home() {
                         textAlign: "center",
                         verticalAlign: "middle",
                       }}
-                      rowSpan="5"
+                      rowSpan="10"
                     >
                       <img
                         src={pastillas}
@@ -604,7 +602,7 @@ export default function Home() {
                     </td>
                   </tr>
                   {recetasConHorarioActualizado.map((receta) => {
-                    if (receta.dosisConHorario.length === 1) {
+                    if (receta.dosisConHorario.length === 1 && !receta.fecha === undefined) {
                       const dosisUnica = receta.dosisConHorario[0];
                       const hours = dosisUnica?.fecha?.getHours() ?? "";
                       const minutes = dosisUnica?.fecha?.getMinutes() ?? "";
