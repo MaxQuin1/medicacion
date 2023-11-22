@@ -602,7 +602,7 @@ export default function Home() {
                     </td>
                   </tr>
                   {recetasConHorarioActualizado.map((receta) => {
-                    if (receta.dosisConHorario.length === 1 && receta.fecha !== undefined) {
+                    if (receta.dosisConHorario.length === 1 && receta.fecha !== null) {
                       const dosisUnica = receta.dosisConHorario[0];
                       const hours = dosisUnica?.fecha?.getHours() ?? "";
                       const minutes = dosisUnica?.fecha?.getMinutes() ?? "";
