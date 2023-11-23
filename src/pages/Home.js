@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import AddComentario from "../content/AddComentario";
 
 export default function Home() {
+  const [filasMostradas, setFilasMostradas] = useState(0);
   // consigo el id del usuario con el que se loguea
   const id_usuario = window.location.href.split("/")[4];
   // constante de estado para las recetas de la BD
@@ -132,7 +133,7 @@ export default function Home() {
     };
   });
 
-  const compararFecha = async(e, id) => {
+  const compararFecha = async (e, id) => {
     e.preventDefault();
     const recetaIndex = recetasConHorarioActualizado.findIndex(
       (receta) => receta.id_receta === id
@@ -225,113 +226,127 @@ export default function Home() {
       <div className="bg-blue-200 overflow-y-auto h-screen pt-5">
         <div dir="rtl" className="b-0">
           <button className=" bg-blue-700 text-white px-3 mr-10 py-2 mb-1 font-bold uppercase rounded-3xl">
-              <Link to={`/medicamentosPendientes/${id_usuario}`}>Medicamentos pendientes</Link>
-            </button>
+            <Link to={`/medicamentosPendientes/${id_usuario}`}>
+              Medicamentos pendientes
+            </Link>
+          </button>
           <button className="bg-blue-700 text-white px-3 mr-5 py-2 mb-1 font-bold uppercase rounded-3xl">
-              <Link to={`/medicamento/${id_usuario}`}>Agregar receta</Link>
-            </button>
+            <Link to={`/medicamento/${id_usuario}`}>Agregar receta</Link>
+          </button>
         </div>
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center m-4">
           <div className="bg-white rounded-lg shadow-lg p-1  lg:w-2/3">
-            <div className="m-5 border ">
-              <div className="flex ml-[24%] gap-[8%] w-full">
-                <b className="">Medicamentos</b>
-                <b className="">Dosis</b>
-                <b className="">Tiempo</b>
-                <b className="">Dia</b>
-                <b className="">Comentarios</b>
-              </div>
-              <table className="w-full mt-1">
+            <div className="m-3 ">
+              <table className="w-full bg-gray-100 rounded-t-lg  items-center ">
                 <tbody>
-                  <tr key={recetasConHorarioActualizado}>
-                    <td
-                      className="bg-red-200"
-                      style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                      }}
-                      rowSpan='10'
-                    >
-                      <img
-                        src={sol}
-                        alt="sol"
-                        style={{ display: "inline-block" }}
-                      />
-                    </td>
+                  <tr className="text-center">
+                    <td>Medicamentos</td>
+                    <td>Dosis</td>
+                    <td>Tiempo</td>
+                    <td>Día</td>
+                    <td>Comentarios</td>
                   </tr>
-                  {recetasConHorarioActualizado.map((receta) => {
-                    return (
-                      <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita, index) => {
-                          if (
-                            fechita.nombre_horario === "morning" &&
-                            receta.dosisConHorario.length > 1
-                          ) {
-                            return (
-                              <tr
-                                key={receta.id}
-                                className="bg-red-100 text-center"
-                              >
-                                <td>{receta.medicamento}</td>
-                                <td>
-                                  {receta.cantidad}
-                                  {receta.unidad}
-                                </td>
-                                <td>
-                                  {fechita.fecha.getHours()}:
-                                  {fechita.fecha.getMinutes()}
-                                </td>
-                                <td>{fechita.fecha.toLocaleDateString()}</td>
-                                <td>
-                                  <div>
-                                    {index === 0 ? (
-                                      <>
-                                        <button
-                                          onClick={(e) =>
-                                            compararFecha(e, receta.id_receta)
-                                          }
-                                          className="bg-red-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
-                                        >
-                                          Check
-                                        </button>
-                                        <button
-                                          onClick={handleOpenModal}
-                                          className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
-                                        >
-                                          Agregar comentario
-                                        </button>
-                                        <AddComentario
-                                          id={receta.id_receta}
-                                          isOpen={isModalOpen}
-                                          onClose={handleCloseModal}
-                                          onConfirm={handleConfirmAction}
-                                          message="Agrega tu comentario"
-                                          inputPlaceholder="Comentario"
-                                          inputValue={userToAdd}
-                                          onInputChange={handleUserInputChange}
-                                        />
-                                      </>
-                                    ) : null}
-                                  </div>
-                                  {receta.comentario}
-                                </td>
-                              </tr>
-                            );
-                          } else {
-                            return null;
-                          }
-                        })}
-                      </React.Fragment>
-                    );
-                  })}
                 </tbody>
               </table>
-              {/* */}
-              <table className="w-full mt-1">
-                <tbody>
+                <table className="w-full mt-1 uno-table table-auto overflow-y-auto h-[20vh]">
+                  <tbody className="max-h-[100px] ">
+                    <tr key={recetasConHorarioActualizado} className="">
+                      <td
+                        className="#FD9998 "
+                        style={{
+                          textAlign: "center",
+                          verticalAlign: "middle",
+                        }}
+                        rowSpan="10"
+                      >
+                        <img
+                          src={sol}
+                          alt="sol"
+                          style={{ display: "inline-block" }}
+                          className="m-2 h-[60px] w-[60px]"
+                        />
+                      </td>
+                    </tr>
+                    {recetasConHorarioActualizado.slice(0,3)
+                      .map((receta) => {
+                        return (
+                          <React.Fragment key={receta.id}>
+                            {receta.primerasFechas.map((fechita, index) => {
+                              if (
+                                fechita.nombre_horario === "morning" &&
+                                receta.dosisConHorario.length > 1
+                              ) {
+                                return (
+                                  <tr
+                                    key={receta.id}
+                                    className="bg-red-100 text-center"
+                                  >
+                                    <td>{receta.medicamento}</td>
+                                    <td>
+                                      {receta.cantidad}
+                                      {receta.unidad}
+                                    </td>
+                                    <td>
+                                      {fechita.fecha.getHours()}:
+                                      {fechita.fecha.getMinutes()}
+                                    </td>
+                                    <td>
+                                      {fechita.fecha.toLocaleDateString()}
+                                    </td>
+                                    <td>
+                                      <div>
+                                        {index === 0 ? (
+                                          <>
+                                            <button
+                                              onClick={(e) =>
+                                                compararFecha(
+                                                  e,
+                                                  receta.id_receta
+                                                )
+                                              }
+                                              className="bg-red-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
+                                            >
+                                              Check
+                                            </button>
+                                            <button
+                                              onClick={handleOpenModal}
+                                              className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
+                                            >
+                                              Agregar comentario
+                                            </button>
+                                            <AddComentario
+                                              id={receta.id_receta}
+                                              isOpen={isModalOpen}
+                                              onClose={handleCloseModal}
+                                              onConfirm={handleConfirmAction}
+                                              message="Agrega tu comentario"
+                                              inputPlaceholder="Comentario"
+                                              inputValue={userToAdd}
+                                              onInputChange={
+                                                handleUserInputChange
+                                              }
+                                            />
+                                          </>
+                                        ) : null}
+                                      </div>
+                                      {receta.comentario}
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                                return null;
+                              }
+                            })}
+                          </React.Fragment>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              <table className="w-full mt-1 dos-table">
+                <tbody className="max-h-[100px] overflow-scroll">
                   <tr>
                     <td
-                      className="bg-yellow-200"
+                      className="#FEEACA"
                       style={{
                         textAlign: "center",
                         verticalAlign: "middle",
@@ -342,10 +357,11 @@ export default function Home() {
                         src={amanecer}
                         alt="amanecer"
                         style={{ display: "inline-block" }}
+                        className="m-2 h-[60px] w-[60px]"
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.map((receta) => {
+                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
                         {receta.primerasFechas.map((fechita, index) => {
@@ -356,7 +372,7 @@ export default function Home() {
                             return (
                               <tr
                                 key={receta.id}
-                                className="bg-yellow-100 text-center"
+                                className="text-center"
                               >
                                 <td>{receta.medicamento}</td>
                                 <td>
@@ -371,7 +387,7 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                  {index === 0 ? (
+                                    {index === 0 ? (
                                       <>
                                         <button
                                           onClick={(e) =>
@@ -413,11 +429,11 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="w-full mt-1">
-                <tbody>
-                  <tr>
+              <table className="w-full mt-1 tres-table table-auto overflow-y-scroll h-[100px]">
+                <tbody className="max-h-[100px] overflow-scroll">
+                  <tr className="">
                     <td
-                      className="bg-green-200"
+                      className="bg-[#7FE2DE]"
                       style={{
                         textAlign: "center",
                         verticalAlign: "middle",
@@ -428,10 +444,11 @@ export default function Home() {
                         src={evening}
                         alt="evening"
                         style={{ display: "inline-block" }}
+                        className="m-2 h-[60px] w-[60px]"
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.map((receta) => {
+                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
                         {receta.primerasFechas.map((fechita, index) => {
@@ -442,7 +459,7 @@ export default function Home() {
                             return (
                               <tr
                                 key={receta.id}
-                                className="bg-green-100 text-center"
+                                className=' text-center'
                               >
                                 <td>{receta.medicamento}</td>
                                 <td>
@@ -456,7 +473,7 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                  {index === 0 ? (
+                                    {index === 0 ? (
                                       <>
                                         <button
                                           onClick={(e) =>
@@ -498,8 +515,8 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="w-full mt-1">
-                <tbody>
+              <table className="w-full mt-1 cuatro-table table-auto overflow-y-scroll h-[100px]">
+                <tbody className="max-h-[100px] overflow-scroll">
                   <tr>
                     <td
                       className="bg-blue-200"
@@ -513,13 +530,14 @@ export default function Home() {
                         src={luna}
                         alt="luna"
                         style={{ display: "inline-block" }}
+                        className="m-2 h-[60px] w-[60px]"
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.map((receta) => {
+                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
-                        {receta.primerasFechas.map((fechita ,index) => {
+                        {receta.primerasFechas.map((fechita, index) => {
                           if (
                             fechita.nombre_horario === "night" &&
                             receta.dosisConHorario.length > 1
@@ -527,7 +545,7 @@ export default function Home() {
                             return (
                               <tr
                                 key={receta.id}
-                                className="bg-blue-100 text-center"
+                                className="text-center"
                               >
                                 <td>{receta.medicamento}</td>
                                 <td>
@@ -541,7 +559,7 @@ export default function Home() {
                                 <td>{fechita.fecha.toLocaleDateString()}</td>
                                 <td>
                                   <div>
-                                  {index === 0 ? (
+                                    {index === 0 ? (
                                       <>
                                         <button
                                           onClick={(e) =>
@@ -583,11 +601,11 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="w-full mt-1">
+              <table className="rounded-b-lg w-full mt-1 cinco-table table-auto h-[100px] ">
                 <tbody>
-                  <tr>
+                  <tr className="mx-1">
                     <td
-                      className="bg-green-300"
+                      className="bg-[#a4cdbb]"
                       style={{
                         textAlign: "center",
                         verticalAlign: "middle",
@@ -598,11 +616,15 @@ export default function Home() {
                         src={pastillas}
                         alt="pastillas"
                         style={{ display: "inline-block" }}
+                        className="m-2 h-[60px] w-[60px]"
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.map((receta) => {
-                    if (receta.dosisConHorario.length === 1 && receta.fecha !== null) {
+                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
+                    if (
+                      receta.dosisConHorario.length === 1 &&
+                      receta.fecha !== null
+                    ) {
                       const dosisUnica = receta.dosisConHorario[0];
                       const hours = dosisUnica?.fecha?.getHours() ?? "";
                       const minutes = dosisUnica?.fecha?.getMinutes() ?? "";

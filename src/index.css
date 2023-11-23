@@ -2,16 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.uno-table tbody tr:nth-child(odd) {
+  background-color: #F9BEBA;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
+.uno-table tbody tr:nth-child(even) {
+  background-color:#FBDBD9;
+}
+.uno-table table{
+  overflow-y: scroll;
+}
+
+.dos-table tbody tr:nth-child(odd) {
+  background-color: #FCF2E8;
+}
+
+.dos-table tbody tr:nth-child(even) {
+  background-color:#FBEEDA;
+}
+
+.tres-table tbody tr:nth-child(odd) {
+  background-color: #ADEFEB;
+}
+
+.tres-table tbody tr:nth-child(even) {
+  background-color:#84E0DB;
+}
+
+
+.cuatro-table tbody tr:nth-child(odd) {
+  background-color: #ABC4DF;
+}
+
+.cuatro-table tbody tr:nth-child(even) {
+  background-color:#96B4DA;
+}
+
+.cinco-table tbody tr:nth-child(odd) {
+  background-color: #E6FBF4;
+}
+
+.cinco-table tbody tr:nth-child(even) {
+  background-color:#C6E9D9;
+}
+
+.uno-table tbody {
+  overflow-y: scroll;
+  max-height: 100px;
+}
+
+.dos-table tbody {
+  overflow-y: scroll;
+  max-height: 100px; /* Ajusta esta altura según tus necesidades */
+}
+
+.tres-table tbody {
+  overflow-y: scroll;
+  max-height: 100px; /* Ajusta esta altura según tus necesidades */
+}
+
+.cuatro-table tbody {
+  overflow-y: scroll;
+  max-height: 100px; /* Ajusta esta altura según tus necesidades */
+}
+
+.cinco-table tbody {
+  overflow-y: scroll;
+  max-height: 100px; /* Ajusta esta altura según tus necesidades */
+}
