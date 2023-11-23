@@ -194,7 +194,7 @@ export default function Home() {
     }
   };
   // para ver resultados
-  console.log(recetasConHorarioActualizado);
+  //console.log(recetasConHorarioActualizado);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userToAdd, setUserToAdd] = useState("");
