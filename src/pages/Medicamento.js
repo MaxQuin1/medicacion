@@ -32,7 +32,7 @@ function Medicamento() {
 
   return (
     <>
-      <div className="bg-blue-200 h-screen ">
+      <div className="bg-blue-200 overflow-y-auto h-screen ">
         <div className="ml-20">
           <h1 className="font-black text-5xl text-blue-900"> Nueva receta </h1>
           <p className="mt-4 text-2xl">
@@ -58,7 +58,7 @@ function Medicamento() {
             />
           </div>
         </div>
-        <div className="bg-white shadow rounded-md md:w-3/4 mx-auto px-5 py-10 mt-2 mb-10">
+        <div className="bg-white shadow rounded-md md:w-3/4 mx-auto px-5 py-10 mt-2 mb-10 ">
           <Formulario />
         </div>
       </div>

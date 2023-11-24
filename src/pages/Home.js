@@ -7,10 +7,9 @@ import amanecer from "../img/amanecer.png";
 import luna from "../img/luna.png";
 import pastillas from "../img/pastillas.png";
 import { Link } from "react-router-dom";
-import AddComentario from "../content/AddComentario";
+// import AddComentario from "../content/AddComentario";
 
 export default function Home() {
-  const [filasMostradas, setFilasMostradas] = useState(0);
   // consigo el id del usuario con el que se loguea
   const id_usuario = window.location.href.split("/")[4];
   // constante de estado para las recetas de la BD
@@ -197,29 +196,29 @@ export default function Home() {
   // para ver resultados
   console.log(recetasConHorarioActualizado);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userToAdd, setUserToAdd] = useState("");
-  const [users, setUsers] = useState([]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [userToAdd, setUserToAdd] = useState("");
+  // const [users, setUsers] = useState([]);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  // const handleOpenModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
-  const handleConfirmAction = () => {
-    if (userToAdd) {
-      setUsers([...users, userToAdd]);
-      setUserToAdd("");
-    }
-    setIsModalOpen(false);
-  };
+  // const handleConfirmAction = () => {
+  //   if (userToAdd) {
+  //     setUsers([...users, userToAdd]);
+  //     setUserToAdd("");
+  //   }
+  //   setIsModalOpen(false);
+  // };
 
-  const handleUserInputChange = (e) => {
-    setUserToAdd(e.target.value);
-  };
+  // const handleUserInputChange = (e) => {
+  //   setUserToAdd(e.target.value);
+  // };
 
   return (
     <>
@@ -247,8 +246,8 @@ export default function Home() {
                   </tr>
                 </tbody>
               </table>
-                <table className="w-full mt-1 uno-table table-auto overflow-y-auto">
-                  <tbody className=" ">
+                <table className="w-full mt-1 uno-table table-auto overflow-y-auto h-[20vh]">
+                  <tbody className="max-h-[100px] ">
                     <tr key={recetasConHorarioActualizado} className="">
                       <td
                         className="#FD9998 "
@@ -266,8 +265,7 @@ export default function Home() {
                         />
                       </td>
                     </tr>
-                    {recetasConHorarioActualizado.slice(0,3)
-                      .map((receta) => {
+                    {recetasConHorarioActualizado.map((receta) => {
                         return (
                           <React.Fragment key={receta.id}>
                             {receta.primerasFechas.map((fechita, index) => {
@@ -312,7 +310,7 @@ export default function Home() {
                                               className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                             >
                                               Agregar comentario
-                                            </button> */}
+                                            </button>
                                             <AddComentario
                                               id={receta.id_receta}
                                               isOpen={isModalOpen}
@@ -324,7 +322,7 @@ export default function Home() {
                                               onInputChange={
                                                 handleUserInputChange
                                               }
-                                            />
+                                            /> */}
                                           </>
                                         ) : null}
                                       </div>
@@ -333,7 +331,7 @@ export default function Home() {
                                   </tr>
                                 );
                               } else {
-                                return null
+                                return null;
                               }
                             })}
                           </React.Fragment>
@@ -360,7 +358,7 @@ export default function Home() {
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
+                  {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
                         {receta.primerasFechas.map((fechita, index) => {
@@ -369,10 +367,7 @@ export default function Home() {
                             receta.dosisConHorario.length > 1
                           ) {
                             return (
-                              <tr
-                                key={receta.id}
-                                className="text-center"
-                              >
+                              <tr key={receta.id} className="text-center">
                                 <td>{receta.medicamento}</td>
                                 <td>
                                   {receta.cantidad}
@@ -394,15 +389,15 @@ export default function Home() {
                                           }
                                           className="bg-yellow-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
                                         >
-                                          Check
+                                          Tomar
                                         </button>
                                         {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-yellow-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
                                           Agregar comentario
-                                        </button>
-                                        <AddComentario
+                                        </button> */}
+                                        {/* <AddComentario
                                           id={receta.id_receta}
                                           isOpen={isModalOpen}
                                           onClose={handleCloseModal}
@@ -420,7 +415,15 @@ export default function Home() {
                               </tr>
                             );
                           }
-                          return null;
+                          return null; //(
+                          //   <tr>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //   </tr>
+                          // );
                         })}
                       </React.Fragment>
                     );
@@ -447,7 +450,7 @@ export default function Home() {
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
+                  {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
                         {receta.primerasFechas.map((fechita, index) => {
@@ -456,10 +459,7 @@ export default function Home() {
                             receta.dosisConHorario.length > 1
                           ) {
                             return (
-                              <tr
-                                key={receta.id}
-                                className=' text-center'
-                              >
+                              <tr key={receta.id} className=" text-center">
                                 <td>{receta.medicamento}</td>
                                 <td>
                                   {receta.cantidad}
@@ -480,15 +480,15 @@ export default function Home() {
                                           }
                                           className="bg-green-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
                                         >
-                                          Check
+                                          Tomar
                                         </button>
                                         {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-green-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
                                           Agregar comentario
-                                        </button>
-                                        <AddComentario
+                                        </button> */}
+                                        {/* <AddComentario
                                           id={receta.id_receta}
                                           isOpen={isModalOpen}
                                           onClose={handleCloseModal}
@@ -506,7 +506,15 @@ export default function Home() {
                               </tr>
                             );
                           }
-                          return null;
+                          return null; //(
+                          //   <tr>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //   </tr>
+                          // );
                         })}
                       </React.Fragment>
                     );
@@ -533,7 +541,7 @@ export default function Home() {
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
+                  {recetasConHorarioActualizado.map((receta) => {
                     return (
                       <React.Fragment key={receta.id}>
                         {receta.primerasFechas.map((fechita, index) => {
@@ -542,10 +550,7 @@ export default function Home() {
                             receta.dosisConHorario.length > 1
                           ) {
                             return (
-                              <tr
-                                key={receta.id}
-                                className="text-center"
-                              >
+                              <tr key={receta.id} className="text-center">
                                 <td>{receta.medicamento}</td>
                                 <td>
                                   {receta.cantidad}
@@ -566,15 +571,15 @@ export default function Home() {
                                           }
                                           className="bg-blue-400 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
                                         >
-                                          Check
+                                          Tomar
                                         </button>
                                         {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-blue-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
                                           Agregar comentario
-                                        </button>
-                                        <AddComentario
+                                        </button> */}
+                                        {/* <AddComentario
                                           id={receta.id_receta}
                                           isOpen={isModalOpen}
                                           onClose={handleCloseModal}
@@ -592,7 +597,15 @@ export default function Home() {
                               </tr>
                             );
                           }
-                          return null;
+                          return null; //(
+                          //   <tr>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //     <td>Vacio</td>
+                          //   </tr>
+                          // );
                         })}
                       </React.Fragment>
                     );
@@ -619,7 +632,7 @@ export default function Home() {
                       />
                     </td>
                   </tr>
-                  {recetasConHorarioActualizado.slice(0,3).map((receta) => {
+                  {recetasConHorarioActualizado.map((receta) => {
                     if (
                       receta.dosisConHorario.length === 1 &&
                       receta.fecha !== null
@@ -651,15 +664,15 @@ export default function Home() {
                                 }
                                 className="bg-green-500 ml-1 text-white px-1 py-2 rounded-xl items-center m-auto text-xs"
                               >
-                                Check
+                                Tomar
                               </button>
                               {/* <button
                                 onClick={handleOpenModal}
                                 className="bg-green-500 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                               >
                                 Agregar comentario
-                              </button>
-                              <AddComentario
+                              </button> */}
+                              {/* <AddComentario
                                 id={receta.id_receta}
                                 isOpen={isModalOpen}
                                 onClose={handleCloseModal}
@@ -675,7 +688,15 @@ export default function Home() {
                         </tr>
                       );
                     }
-                    return null;
+                    return null; //(
+                    //   <tr>
+                    //     <td>Vacio</td>
+                    //     <td>Vacio</td>
+                    //     <td>Vacio</td>
+                    //     <td>Vacio</td>
+                    //     <td>Vacio</td>
+                    //   </tr>
+                    // );
                   })}
                 </tbody>
               </table>

@@ -33,7 +33,7 @@ export default function MedicamentosPendientes() {
       console.error("Error al actualizar la fecha:", error);
     }
     window.location.href = `/home/${id_usuario}`;
-    alert("Medicamento tomado puedes revisarlo");
+    alert("Medicamento agregado puedes revisarlo");
   };
 
   return (
@@ -62,7 +62,7 @@ export default function MedicamentosPendientes() {
                       onClick={() => TomarDosis(receta.id_receta)}
                       className="bg-red-400 text-white px-2 py-1 rounded-xl text-xs"
                     >
-                      Tomar Dosis
+                      Agregar a la tabla
                     </button>
                   </td>
                 </tr>
