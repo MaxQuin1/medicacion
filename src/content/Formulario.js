@@ -11,7 +11,8 @@ function Formulario() {
   const [unidad, setUnidad] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [dias, setDias] = useState("");
-  const [intervalo, setIntervalo] = useState(""); 
+  const [intervalo, setIntervalo] = useState("");
+  const [comentario, setComentario] = useState('');
 
   const crearReceta = async (e) => {
     const diasEnMilisegundos = dias * 86400000;
@@ -29,6 +30,7 @@ function Formulario() {
         dias: dias,
         intervalo: intervalo,
         dosis: dosisCalculada,
+        comentario: comentario
       });
       console.log("Respuesta del servidor:", response.data);
       window.location.href = `/home/${id_usuario}`;
@@ -84,9 +86,9 @@ function Formulario() {
   return (
     <>
       <form onSubmit={crearReceta}>
-        <table className="w-full text-left">
+        <table className="w-full text-left ">
           <thead>
-            <tr className="gap-4">
+            <tr className="">
               <td className="text-xl">
                 <div className="mb-4 mr-2">
                   <label className="text-gray-800 ml-3" htmlFor="nombre">
@@ -95,7 +97,7 @@ function Formulario() {
                   <select
                     value={medicamento}
                     onChange={(e) => setMedicamento(e.target.value)}
-                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-50"
+                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-100"
                   >
                     {medicamentos.map((medicamento) => (
                       <option
@@ -117,7 +119,7 @@ function Formulario() {
                   <select
                     value={via}
                     onChange={(e) => setVia(e.target.value)}
-                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-50"
+                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-100"
                   >
                     {vias.map((via) => (
                       <option
@@ -143,7 +145,7 @@ function Formulario() {
                   <select
                     value={unidad}
                     onChange={(e) => setUnidad(e.target.value)}
-                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-50"
+                    className="mt-2 flow-root w-full p-3 rounded-xl bg-gray-100"
                   >
                     {medidas.map((unidad) => (
                       <option
@@ -158,12 +160,13 @@ function Formulario() {
                 </div>
               </td>
               <td className="text-xl">
-                <div className="mb-4 mr-2">
+                <div className="mb-4 mr-1">
                   <label className="text-gray-800 ml-3" htmlFor="nombre">
                     Cantidad:
                   </label>
                   <input
-                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-50"
+                    type="number"
+                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-100"
                     placeholder="Cantidad de dosis"
                     value={cantidad}
                     onChange={(e) => setCantidad(e.target.value)}
@@ -178,7 +181,8 @@ function Formulario() {
                     Días:
                   </label>
                   <input
-                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-50"
+                    type="number"
+                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-100"
                     placeholder="Días"
                     value={dias}
                     onChange={(e) => setDias(e.target.value)}
@@ -191,10 +195,27 @@ function Formulario() {
                     ¿Cada cuántas horas?:
                   </label>
                   <input
-                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-50"
+                    type="number"
+                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-100"
                     placeholder="¿Cada cuántas horas?"
                     value={intervalo}
                     onChange={(e) => setIntervalo(e.target.value)}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr className="">
+            <td className="text-xl">
+                <div className="mb-4 w-full">
+                  <label className="text-gray-800 ml-3" htmlFor="descripcion">
+                    Agrega un comentario: opcional
+                  </label>
+                  <input
+                    type="text"
+                    className="mt-2 flow-root w-full p-3 rounded-xl  bg-gray-100"
+                    placeholder="Comentario"
+                    value={comentario}
+                    onChange={(e) => setComentario(e.target.value)}
                   />
                 </div>
               </td>
