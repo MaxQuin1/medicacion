@@ -244,12 +244,11 @@ export default function Home() {
                     <td>Dosis</td>
                     <td>Tiempo</td>
                     <td>Día</td>
-                    <td>Comentarios</td>
                   </tr>
                 </tbody>
               </table>
-                <table className="w-full mt-1 uno-table table-auto overflow-y-auto h-[20vh]">
-                  <tbody className="max-h-[100px] ">
+                <table className="w-full mt-1 uno-table table-auto overflow-y-auto">
+                  <tbody className=" ">
                     <tr key={recetasConHorarioActualizado} className="">
                       <td
                         className="#FD9998 "
@@ -308,12 +307,12 @@ export default function Home() {
                                             >
                                               Check
                                             </button>
-                                            <button
+                                            {/* <button
                                               onClick={handleOpenModal}
                                               className="bg-red-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                             >
                                               Agregar comentario
-                                            </button>
+                                            </button> */}
                                             <AddComentario
                                               id={receta.id_receta}
                                               isOpen={isModalOpen}
@@ -334,7 +333,7 @@ export default function Home() {
                                   </tr>
                                 );
                               } else {
-                                return null;
+                                return null
                               }
                             })}
                           </React.Fragment>
@@ -397,7 +396,7 @@ export default function Home() {
                                         >
                                           Check
                                         </button>
-                                        <button
+                                        {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-yellow-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
@@ -412,7 +411,7 @@ export default function Home() {
                                           inputPlaceholder="Comentario"
                                           inputValue={userToAdd}
                                           onInputChange={handleUserInputChange}
-                                        />
+                                        /> */}
                                       </>
                                     ) : null}
                                   </div>
@@ -429,8 +428,8 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="w-full mt-1 tres-table table-auto overflow-y-scroll h-[100px]">
-                <tbody className="max-h-[100px] overflow-scroll">
+              <table className="w-full mt-1 tres-table table-auto overflow-y-scroll ">
+                <tbody className=" overflow-scroll">
                   <tr className="">
                     <td
                       className="bg-[#7FE2DE]"
@@ -483,7 +482,7 @@ export default function Home() {
                                         >
                                           Check
                                         </button>
-                                        <button
+                                        {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-green-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
@@ -498,7 +497,7 @@ export default function Home() {
                                           inputPlaceholder="Comentario"
                                           inputValue={userToAdd}
                                           onInputChange={handleUserInputChange}
-                                        />
+                                        /> */}
                                       </>
                                     ) : null}
                                   </div>
@@ -515,7 +514,7 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="w-full mt-1 cuatro-table table-auto overflow-y-scroll h-[100px]">
+              <table className="w-full mt-1 cuatro-table table-auto overflow-y-scroll">
                 <tbody className="max-h-[100px] overflow-scroll">
                   <tr>
                     <td
@@ -569,7 +568,7 @@ export default function Home() {
                                         >
                                           Check
                                         </button>
-                                        <button
+                                        {/* <button
                                           onClick={handleOpenModal}
                                           className="bg-blue-400 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                                         >
@@ -584,7 +583,7 @@ export default function Home() {
                                           inputPlaceholder="Comentario"
                                           inputValue={userToAdd}
                                           onInputChange={handleUserInputChange}
-                                        />
+                                        /> */}
                                       </>
                                     ) : null}
                                   </div>
@@ -601,7 +600,7 @@ export default function Home() {
                 </tbody>
               </table>
               {/* */}
-              <table className="rounded-b-lg w-full mt-1 cinco-table table-auto h-[100px] ">
+              <table className="rounded-b-lg w-full mt-1 cinco-table table-auto ">
                 <tbody>
                   <tr className="mx-1">
                     <td
@@ -654,7 +653,7 @@ export default function Home() {
                               >
                                 Check
                               </button>
-                              <button
+                              {/* <button
                                 onClick={handleOpenModal}
                                 className="bg-green-500 ml-1 text-white px-1 py-2 my-1 rounded-xl text-xs"
                               >
@@ -669,7 +668,7 @@ export default function Home() {
                                 inputPlaceholder="Comentario"
                                 inputValue={userToAdd}
                                 onInputChange={handleUserInputChange}
-                              />
+                              /> */}
                             </div>
                             {receta.comentario}
                           </td>
